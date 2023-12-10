@@ -1,5 +1,5 @@
 import requests, json
-uri = "http://127.0.0.1:5000"
+uri = "http://192.168.165.127:5000"
 
 while True:
     command = input("> ").split()
