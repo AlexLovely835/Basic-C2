@@ -15,7 +15,7 @@ if exist "startup_script.bat" (
     echo File copied successfully to %destination_folder%.
 )
 echo Launching agent.
-cd C:\hidden\
-start /B wscript "launcher.vbs"
+
+start /B wscript "C:\hidden\launcher.vbs"
 
 pause

